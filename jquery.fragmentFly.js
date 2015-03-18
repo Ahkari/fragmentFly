@@ -6,7 +6,7 @@ $.fn.extend({
      *
      * @param {[divisionSetting]}
      *            分割设置，{
-     						 image_url:url,
+     *						 image_url:url,
      *                       cut_dir:"x","y",
      *                       ave_part:ave_part,
      *                       rm_part:rm_part
