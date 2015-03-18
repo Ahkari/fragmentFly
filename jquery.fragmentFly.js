@@ -6,6 +6,7 @@ $.fn.extend({
      *
      * @param {[divisionSetting]}
      *            分割设置，{
+     						 image_url:url,
      *                       cut_dir:"x","y",
      *                       ave_part:ave_part,
      *                       rm_part:rm_part
@@ -28,6 +29,7 @@ $.fn.extend({
         var cardWidth=cardDom.width();
         //获取ID，作为生成元素的主标识
         var cardDomName=cardDom.attr("id");
+        var url=divisionSetting.image_url;
 
         var cardCopyObjects;
 
@@ -109,7 +111,7 @@ $.fn.extend({
                 	height=unitY;
                 }
 
-                var styleStr="style=\"position:absolute;z-index:10;opacity:"+opacity_start+";left:"+left+"px;top:"+top+"px;width:"+width+"px;height:"+height+"px;background:url('./src/beautifulWorldTitle.png') no-repeat -"+left+"px -"+top+"px;\"";
+                var styleStr="style=\"position:absolute;z-index:10;opacity:"+opacity_start+";left:"+left+"px;top:"+top+"px;width:"+width+"px;height:"+height+"px;background:url("+url+") no-repeat -"+left+"px -"+top+"px;\"";
           
                 eachTitle="<div id=\""+cardDomName+"_cardCopy"+i+"_"+j+"\" "+styleStr+"></div>";
                 creatTitleCopy+=eachTitle;
