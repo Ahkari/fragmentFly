@@ -1,0 +1,218 @@
+*{
+	padding: 0px;
+	margin: 0px;
+}
+
+body{
+	background-color: #0769ad;
+}
+.all_wrap{
+	margin: 0px auto;
+	width: 900px;
+	background-color: #ffffff;
+/*	box-shadow: 5px 5px 3px #888888;*/
+}
+
+.wrap_head{
+	margin: 0px auto;
+	width:100%;
+	height: 150px;
+	background-color: #0769ad;
+}
+
+.wrap_middle{
+	margin: 0px auto;
+	width: 100%;
+	height: 100%;
+
+}
+
+.wrap_bottom{
+	margin: 15px auto;
+	width: 100%;
+	height: 60px;
+}
+
+#fragment_title{
+	/*必须设为relative*/
+	position: relative;	
+	/*宽高与被分割的背景图片一致*/
+	width: 424px;
+	height:150px;
+}
+.wrap_middle_head{
+	background-color: #06568e;	
+	height: 56px;
+	width: 100%;
+
+}
+.wrap_middle_body{
+	background-color: #ffffff;
+	height: 100%;
+	width: 100%;
+}
+
+.warp_middle_body_wrap{
+	background-color: #eeeeee;
+	margin: 2% 3%;
+	height: 2500px;
+	width: 94%;
+}
+.parm_info_title{
+	background-color: #D0D0D0;
+	height: 40px;
+	width: 100%;
+}
+p{
+	font-family:"微软雅黑","klavika-web","Helvetica Neue",Helvetica,Arial,Geneva,sans-serif !important;
+	margin: 0px 20px;
+	line-height: 150%;
+	color:#555555;
+}
+p.heigher{
+	font-family:"微软雅黑","klavika-web","Helvetica Neue",Helvetica,Arial,Geneva,sans-serif !important;
+	margin: 0px 20px;
+	line-height: 250%;
+	/*color: #333333;*/
+}
+.parm_info_title p{
+	font-family:"微软雅黑","klavika-web","Helvetica Neue",Helvetica,Arial,Geneva,sans-serif !important;
+    font-weight: 700;
+    text-align: center center;
+    line-height: 250%;
+    margin: 0px 20px;
+    color: #222222;
+}
+
+.codeArea{
+	margin: 0px 20px;
+}
+.Info_img_wrap_info{
+	float: left;
+	height: 450px;
+	width: 40%;
+	text-align: left;
+}
+.Info_img_wrap_img{
+	float: right;
+	height: 450px;
+	width: 60%;
+	text-align: center;
+}
+.Info_img_wrap_img img{
+	margin: 35px;
+	position: relative;
+	/* margin: 25px 40px; */
+}
+.wordSet{
+	font-weight:900;
+	color: #444444; 
+}
+.wordSetShin{
+	font-style: italic;
+}
+hr{
+	color:#eeeeee;
+}
+.img_demo{
+	margin: 35px;
+	/*position:relative;*/
+	height: 200px;
+	position: relative;
+	/*background-color: #999;*/
+}
+.demo1{
+	position: absolute;
+	top:10px;
+	left:5px;
+	width: 424px;
+	height: 150px;
+	background: url("../img/demo1.png") no-repeat 
+}
+.demo1_1{
+	position: absolute;
+	top:10px;
+	left:5px;
+	width: 424px;
+	height: 150px;
+	background: url("../img/demo1info.png") no-repeat;
+	opacity: 0;
+	transition: opacity 0.6s;
+	-moz-transition: opacity 0.6s;
+	-webkit-transition: opacity 0.6s;
+	-o-transition: opacity 0.6s; 
+}
+.demo1_1:hover{
+	opacity: 1;
+}
+.demo2{
+	position: absolute;
+	top:10px;
+	left:5px;
+	width: 424px;
+	height: 150px;
+	background: url("../img/demo2.png") no-repeat 
+}
+.demo2_1{
+	position: absolute;
+	top:10px;
+	left:5px;
+	width: 424px;
+	height: 150px;
+	background: url("../img/demo2info.png") no-repeat;
+	opacity: 0;
+	transition: opacity 0.6s;
+	-moz-transition: opacity 0.6s;
+	-webkit-transition: opacity 0.6s;
+	-o-transition: opacity 0.6s;
+}
+.demo2_1:hover{
+	opacity: 1;
+}
+
+.clearFloat{
+	clear: both;
+}
+
+/*动画配置部分的css样式*/
+.demo_anime_config{
+	margin: 20px auto;
+	width: 95%;
+	background-color: #aaa;
+}
+.line1{
+	height: 50px;
+}
+.line1>td:first-child{
+	width: 250px;
+}
+.line1>td:nth-child(2){
+	width: 400px;
+}
+.line1>td:nth-child(3){
+	width: 250px;
+}
+.line2{
+	height: 180px;
+}
+.line3{
+	height: 50px;
+}
+.line4{
+	height: 40px;
+}
+.line5{
+	height: 40px;
+}
+.line6{
+	height: 40px;
+}
+.line7{
+	height: 40px;
+}
+.line8{
+	height: 40px;
+}
+.line9{
+	height: 40px;
+}

@@ -1,0 +1,259 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]> <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!--<![endif]-->
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>fragmentFly_Demo</title>
+	<script src="./js/libs/shCore.js" type="text/javascript"></script>
+	<script src="./js/libs/shBrushCss.js" type="text/javascript"></script>
+	<script src="./js/libs/shBrushJScript.js" type="text/javascript"></script>
+	<script src="./js/libs/shBrushCSharp.js" type="text/javascript"></script>
+	<script src="./js/libs/shBrushXml.js" type="text/javascript"></script>
+	<script type="text/javascript">
+        SyntaxHighlighter.config.clipboardSwf = './js/libs/clipboard.swf';
+        SyntaxHighlighter.all();
+    </script>
+	<link rel="stylesheet" type="text/css" href="./js/libs/shCore.css" />
+	<link rel="stylesheet" type="text/css" href="./js/libs/shThemeDefault.css" />
+	<link href="./css/demo.css" rel="stylesheet" type="text/css" />
+	<!-- <link href="./css/style.css" rel="stylesheet" type="text/css" /> -->
+<!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>	
+<body>
+	<div class="all_wrap">
+		<div class="wrap_head">
+			<!-- 对fragment_title使用fragmenFly插件 -->
+			<div id="fragment_title">
+				
+			</div>
+		</div>
+
+		<div class="wrap_middle">
+			<div class="wrap_middle_head">
+			<!-- 	<ul>
+					<li></li>
+					<li></li>
+					<li></li>
+				</ul> -->
+			</div>
+			<div class="wrap_middle_body">
+				<div class="warp_middle_body_wrap">
+					<div class="parm_info">
+						<div class="parm_info_title">
+							<p>使用说明</p>
+						</div>
+						<div class="infoArea">
+							<P class="heigher">步骤一：html</P>
+							<p>创建运用背景图片的元素</p>
+							<div class="codeArea">
+								<pre class="brush: html;">
+								<!-- 对fragment_title使用fragmenFly插件 -->
+								<div id="fragment_title">
+					
+								</div>
+								</pre>
+							</div>
+							<p class="heigher">步骤二：css</p>
+							<p>&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;&nbsp;该元素设为相对定位，便于分割后的子元素进行定位。</p>
+							<p>&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;&nbsp;宽高设为与被分割的图片一致，可确保精准分割。</p>
+							<div class="codeArea">
+								<pre class="brush: css;">
+								#fragment_title{
+									/*必须设为relative*/
+									position: relative;	
+									/*宽高与被分割的背景图片一致*/
+									width: 424px;
+									height:150px;
+								}
+								</pre>
+							</div>
+							<p class="heigher">步骤三：javascript</p>
+							<p>&nbsp;&nbsp;&nbsp;&nbsp;1.&nbsp;&nbsp;通过jquery实现，需要导入所需文件。</p>
+							<div class="codeArea">
+								<pre class="brush: html;">
+								<!-- 导入jquery或有jquery环境 -->
+								<script src="../libs/jquery.js" type="text/javascript"></script>
+								<!-- 导入插件 -->
+								<script src="../jquery.fragmentFly.js" type="text/javascript"></script>
+								</pre>
+							</div>
+							<p>&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;&nbsp;对元素运用插件，参数设置除了图片目录都有默认值。</p>
+							<div class="codeArea">
+								<pre class="brush: javascript;">
+								<!-- 对背景图元素运用fragmentFly插件 -->
+							    $("#fragment_title").fragmentFly({
+								    	image_url:"./img/title.png",	//背景图路径，当前目录为元素所在的html目录
+								    	cut_dir:"x",	//可选"x"或"y"，默认均分x方向
+								    	ave_part:12,	//均分cut_dir方向，默认切割成12份
+								     	rm_part:[2,3] 	//非cut_dir方向上随机切割，默认最小2份，最多3份 
+								    },{
+								     	anime_dir:"down",	//切割子元素动画运行方向，可选"up","down","left","right"，默认为down
+								     	path:[500,800],		//切割子元素动画路长，默认路径最短500px，最长800px
+								     	time:[1000,1300],	//切割子元素动画时长，默认时长最短1000ms，最长1300ms
+								     	opacity:[1,1] 		//切割子元素透明度变化，默认初始为1，结束为1(即无渐变)
+								    });
+								</pre>
+							</div>
+							<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;快速配置如下。</p>
+							<div class="codeArea">
+								<pre class="brush: javascript;">
+								<!-- 快速配置 -->
+							    $("#fragment_title").fragmentFly({image_url:"./img/title.png"},{});
+								</pre>
+							</div>
+							
+						</div>
+						<br/>
+						<br/>
+						<div class="parm_info_title">
+							<p>配置说明</p>
+						</div>
+						<div class="Info_img_Wrap">
+							<div class="Info_img_wrap_info">
+								<br/>
+								<p class="wordSet">切割方向cut_dir</p>
+								<p class="wordSetShin">接受参数:"x"或"y"</p>
+								<br/>
+								<p>为了模拟出碎片的随机效果，先选择一个方向均匀分割，另一个方向则可以赋给随机值，随机分割。</p>
+								<br/>
+								<hr style="border:0;background-color:#cccccc;height:1px;">
+								<br/>
+								<p class="wordSet">均分值ave_part</p>
+								<p class="wordSetShin">接受参数:整数值，如4</p>
+								<br/>
+								<p>均分cut_dir方向</p>
+								<br/>
+								<hr style="border:0;background-color:#cccccc;height:1px;">
+								<br/>
+								<p class="wordSet">随机分割值rm_part</p>
+								<p class="wordSetShin">接受参数:长度为2的整数数组，如[3,8]</p>
+								<br/>
+								<p>非均分方向上，随机分割。参数是分割份数的取值区间。</p>
+							</div>
+							<div class="Info_img_wrap_img">
+								<div class="img_demo">
+									<div class="demo1"></div>
+									<div class="demo1_1"></div>
+								</div>
+								<div class="img_demo">
+									<div class="demo2"></div>
+									<div class="demo2_1"></div>
+								</div>
+
+								<!-- <img id="demo1" src="./img/demo1.png" />
+								<img id="demo2" src="./img/demo2.png" /> -->
+							</div>	
+							<div class="clearFloat"></div>						
+						</div>
+						
+						<br/>
+						<br/>
+						<div class="parm_info_title">
+							<p>动画模拟</p>
+						</div>
+						<div class="infoArea">
+							<table class="demo_anime_config" border="1">
+								<tr class="line1">
+									<td></td>
+									<td>up</td>
+									<td></td>
+								</tr>
+								<tr class="line2">
+									<td>left</td>
+									<td>img</td>
+									<td>right</td>
+								</tr>
+								<tr class="line3">
+									<td></td>
+									<td>down</td>
+									<td></td>
+								</tr>
+								<tr class="line4">
+									<td>最短路径</td>
+									<td>
+										<section class="container">
+										  <input type="radio" class="radio" name="progress" value="five" id="five">
+										  <label for="five" class="label">5%</label>
+										  <input type="radio" class="radio" name="progress" value="twentyfive" id="twentyfive" checked>
+										  <label for="twentyfive" class="label">25%</label>
+										  <input type="radio" class="radio" name="progress" value="fifty" id="fifty">
+										  <label for="fifty" class="label">50%</label>
+										  <input type="radio" class="radio" name="progress" value="seventyfive" id="seventyfive">
+										  <label for="seventyfive" class="label">75%</label>
+										  <input type="radio" class="radio" name="progress" value="onehundred" id="onehundred">
+										  <label for="onehundred" class="label">100%</label>
+										  <div class="progress">
+										    <div class="progress-bar"></div>
+										  </div>
+										</section>
+									</td>
+									<td>default:500px</td>
+								</tr>
+								<tr class="line5">
+									<td>最长路径</td>
+									<td></td>
+									<td>default:800px</td>
+								</tr>
+								<tr class="line6">
+									<td>最短时间</td>
+									<td></td>
+									<td>default:1000ms</td>
+								</tr>
+								<tr class="line7">
+									<td>最长时间</td>
+									<td></td>
+									<td>default:1300px</td>
+								</tr>
+								<tr class="line8">
+									<td>初始透明度</td>
+									<td></td>
+									<td>default:1</td>
+								</tr>
+								<tr class="line9">
+									<td>结束透明度</td>
+									<td></td>
+									<td>default:1</td>
+								</tr>
+							</table>
+						
+							
+						</div>
+					</div>
+					<div class="demo_opeation">
+
+					</div>
+
+
+				</div>
+
+			</div>
+		</div>
+
+		<div class="wrap_bottom">
+		</div>
+
+
+	</div>
+<script src="../libs/jquery.js" type="text/javascript"></script>
+<script src="../jquery.fragmentFly.js" type="text/javascript"></script>
+<script src="./js/demo.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+	$(function(){
+	
+
+	});
+
+
+</script>
+
+
+
+</body>
+
+
+</html>

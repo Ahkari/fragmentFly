@@ -24,8 +24,8 @@ $.fn.extend({
     "fragmentFly":function(divisionSetting,animeSetting){
         // jQuery对象的方法扩展，所以用jQuery.fn.extend()来编写
         cardDom=$(this);
-        //绑定的图像的宽高，以此作为切割标准
-        var cardHeight=cardDom.height();
+        //绑定的图像的宽高，以此作为切割标
+ 准       var cardHeight=cardDom.height();
         var cardWidth=cardDom.width();
         //获取ID，作为生成元素的主标识
         var cardDomName=cardDom.attr("id");
