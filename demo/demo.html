@@ -156,67 +156,195 @@
 							<p>动画模拟</p>
 						</div>
 						<div class="infoArea">
-							<table class="demo_anime_config" border="1">
+							<table class="demo_anime_config" border="0">
 								<tr class="line1">
 									<td></td>
-									<td>up</td>
+									<td>
+										<div class="td_2">
+	
+										</div>
+									</td>
 									<td></td>
 								</tr>
 								<tr class="line2">
-									<td>left</td>
-									<td>img</td>
-									<td>right</td>
+									<td>
+										<div class="td_4">
+										</div>
+									</td>
+									<td>
+									<!-- 对demoAnime使用fragmenFly插件 -->
+										<div id="demoAnime_img"></div>
+									</td>
+									<td>
+										<div class="td_6">
+										</div>
+									</td>
 								</tr>
 								<tr class="line3">
 									<td></td>
-									<td>down</td>
+									<td>
+										<div class="td_8">
+										</div>
+									</td>
 									<td></td>
 								</tr>
 								<tr class="line4">
-									<td>最短路径</td>
 									<td>
-										<section class="container">
-										  <input type="radio" class="radio" name="progress" value="five" id="five">
-										  <label for="five" class="label">5%</label>
-										  <input type="radio" class="radio" name="progress" value="twentyfive" id="twentyfive" checked>
-										  <label for="twentyfive" class="label">25%</label>
-										  <input type="radio" class="radio" name="progress" value="fifty" id="fifty">
-										  <label for="fifty" class="label">50%</label>
-										  <input type="radio" class="radio" name="progress" value="seventyfive" id="seventyfive">
-										  <label for="seventyfive" class="label">75%</label>
-										  <input type="radio" class="radio" name="progress" value="onehundred" id="onehundred">
-										  <label for="onehundred" class="label">100%</label>
-										  <div class="progress">
-										    <div class="progress-bar"></div>
-										  </div>
-										</section>
+										<p>
+											最短路径(px)
+										</p>
 									</td>
-									<td>default:500px</td>
+									<td>
+						<!-- 				<section class="container_line4">
+										  <input type="radio" class="radio" name="progress1" value="50" id="five">
+										  <label for="five" class="label">50</label>
+										  <input type="radio" class="radio" name="progress1" value="250" id="twentyfive" checked>
+										  <label for="twentyfive" class="label">250</label>
+										  <input type="radio" class="radio" name="progress1" value="500" id="fifty">
+										  <label for="fifty" class="label">500</label>
+										  <input type="radio" class="radio" name="progress1" value="750" id="seventyfive">
+										  <label for="seventyfive" class="label">750</label>
+										  <input type="radio" class="radio" name="progress1" value="1000" id="onehundred">
+										  <label for="onehundred" class="label">1000</label>
+									
+										</section> -->
+										<p>
+											运动路径的可能的最小值
+										</p>
+									</td>
+									<td>
+										<input type="text" style="width:80px" class="input1" value="500"></input>
+									</td>
 								</tr>
 								<tr class="line5">
-									<td>最长路径</td>
-									<td></td>
-									<td>default:800px</td>
+									<td>
+										<p>
+											最长路径(px)
+										</p>
+									</td>
+									<td>
+						<!-- 				<section class="container_line5">
+										  <input type="radio" class="radio" name="progress2" value="100" id="five">
+										  <label for="five" class="label">100</label>
+										  <input type="radio" class="radio" name="progress2" value="500" id="twentyfive" checked>
+										  <label for="twentyfive" class="label">500</label>
+										  <input type="radio" class="radio" name="progress2" value="1000" id="fifty">
+										  <label for="fifty" class="label">1000</label>
+										  <input type="radio" class="radio" name="progress2" value="1500" id="seventyfive">
+										  <label for="seventyfive" class="label">1500</label>
+										  <input type="radio" class="radio" name="progress2" value="2000" id="onehundred">
+										  <label for="onehundred" class="label">2000</label>
+										 
+										</section> -->
+										<p>
+											运动路径的可能的最大值
+										</p>
+									</td>
+									<td><input type="text" style="width:80px" class="input2" value="800"></input></td>
 								</tr>
 								<tr class="line6">
-									<td>最短时间</td>
-									<td></td>
-									<td>default:1000ms</td>
+									<td>
+										<p>
+											最短时间(ms)
+										</p>
+									</td>
+									<td>
+								<!-- 		<section class="container_line6">
+										  <input type="radio" class="radio" name="progress3" value="200" id="five">
+										  <label for="five" class="label">200</label>
+										  <input type="radio" class="radio" name="progress3" value="500" id="twentyfive" checked>
+										  <label for="twentyfive" class="label">500</label>
+										  <input type="radio" class="radio" name="progress3" value="800" id="fifty">
+										  <label for="fifty" class="label">800</label>
+										  <input type="radio" class="radio" name="progress3" value="1500" id="seventyfive">
+										  <label for="seventyfive" class="label">1500</label>
+										  <input type="radio" class="radio" name="progress3" value="2500" id="onehundred">
+										  <label for="onehundred" class="label">2500</label>
+										
+										</section> -->
+										<p>
+											运动时间的可能的最小值
+										</p>
+									</td>
+									<td><input type="text" style="width:80px" class="input3" value="1000"></input></td>
 								</tr>
 								<tr class="line7">
-									<td>最长时间</td>
-									<td></td>
-									<td>default:1300px</td>
+									<td>
+										<p>
+											最长时间(ms)
+										</p>
+									</td>
+									<td>
+						<!-- 				<section class="container_line7">
+										  <input type="radio" class="radio" name="progress4" value="400" id="five">
+										  <label for="five" class="label">400</label>
+										  <input type="radio" class="radio" name="progress4" value="1000" id="twentyfive" checked>
+										  <label for="twentyfive" class="label">1000</label>
+										  <input type="radio" class="radio" name="progress4" value="1600" id="fifty">
+										  <label for="fifty" class="label">1600</label>
+										  <input type="radio" class="radio" name="progress4" value="3000" id="seventyfive">
+										  <label for="seventyfive" class="label">3000</label>
+										  <input type="radio" class="radio" name="progress4" value="5000" id="onehundred">
+										  <label for="onehundred" class="label">5000</label>
+										
+										</section> -->
+										<p>
+											运动时间的可能的最大值
+										</p>
+									</td>
+									<td><input type="text" style="width:80px" class="input4" value="1300"></input></td>
 								</tr>
 								<tr class="line8">
-									<td>初始透明度</td>
-									<td></td>
-									<td>default:1</td>
+									<td>
+										<p>
+											初始透明度
+										</p>
+									</td>
+									<td>
+								<!-- 		<section class="container_line8">
+										  <input type="radio" class="radio" name="progress5" value="0" id="five">
+										  <label for="five" class="label">0</label>
+										  <input type="radio" class="radio" name="progress5" value="0.25" id="twentyfive" checked>
+										  <label for="twentyfive" class="label">0.25</label>
+										  <input type="radio" class="radio" name="progress5" value="0.5" id="fifty">
+										  <label for="fifty" class="label">0.5</label>
+										  <input type="radio" class="radio" name="progress5" value="0.75" id="seventyfive">
+										  <label for="seventyfive" class="label">0.75</label>
+										  <input type="radio" class="radio" name="progress5" value="1" id="onehundred">
+										  <label for="onehundred" class="label">1</label>
+									
+										</section> -->
+										<p>
+											元素运动时的起始透明度
+										</p>
+									</td>
+									<td><input type="text" style="width:80px" class="input5" value="1"></input></td>
 								</tr>
 								<tr class="line9">
-									<td>结束透明度</td>
-									<td></td>
-									<td>default:1</td>
+									<td>
+										<p>
+											结束透明度
+										</p>
+									</td>
+									<td>
+									<!-- 	<section class="container_line9">
+										  <input type="radio" class="radio" name="progress6" value="0" id="five_test">
+										  <label for="five" class="label">0</label>
+										  <input type="radio" class="radio" name="progress6" value="0.25" id="twentyfive" checked>
+										  <label for="twentyfive" class="label">0.25</label>
+										  <input type="radio" class="radio" name="progress6" value="0.5" id="fifty">
+										  <label for="fifty" class="label">0.5</label>
+										  <input type="radio" class="radio" name="progress6" value="0.75" id="seventyfive">
+										  <label for="seventyfive" class="label">0.75</label>
+										  <input type="radio" class="radio" name="progress6" value="1" id="onehundred">
+										  <label for="onehundred" class="label">1</label>
+									
+										</section> -->
+										<p>
+											元素运动完成后的透明度
+										</p>
+									</td>
+									<td><input type="text" style="width:80px" class="input6" value="1"></input></td>
 								</tr>
 							</table>
 						
@@ -234,8 +362,11 @@
 		</div>
 
 		<div class="wrap_bottom">
+			<div class="wrap_bottom_fixed">
+			</div>
 		</div>
-
+		</div>
+		
 
 	</div>
 <script src="../libs/jquery.js" type="text/javascript"></script>

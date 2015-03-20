@@ -29,10 +29,73 @@ $(function(){
      	time:[600,1000],
      	opacity:[0,1]
      });
+     //让动画模拟处的按钮初始化芹况满足预期，并绑定焦点切换事件。
+     // for (var i=0;i<6;i++){
+     //      var che=$("input[name=progress"+(i+1)+"]:checked");
+     //      console.log(che.val());
+     //      $(".input"+(i+1)).val(parseInt(che.val()));
+     // } //for (var i=0;i<6;i++)
 
+     // $("input[name=progress1]").change(function(){
+     //      var che1=$("input[name=progress1]:checked");
+     //      $(".input1").val((che1.val()));
+     // });
+     
+     for(var i=0;i<6;i++){
+          $(".input"+(i+1)).css("color","gray");     
+     }
 
-	
+     $(".td_2").mouseenter(function(){
+          fragmentGetValueEnter("up");
+     }).mouseleave(function(){
+         
 
+     });
+     $(".td_4").mouseenter(function(){
+          fragmentGetValueEnter("left");
+     }).mouseleave(function(){
+         
+
+     });
+     $(".td_6").mouseenter(function(){
+          fragmentGetValueEnter("right");
+     }).mouseleave(function(){
+      
+
+     });
+     $(".td_8").mouseenter(function(){
+          fragmentGetValueEnter("down");
+     }).mouseleave(function(){
+          
+
+     });
+     function fragmentGetValueEnter(dir){
+          if($("#demoAnime_img>div").is(":animated")){
+               return false;
+          }else{
+               bindFragmentPlugin(dir,Number($(".input1").val()),Number($(".input2").val()),Number($(".input3").val()),Number($(".input4").val()),Number($(".input5").val()),Number($(".input6").val()));
+          }
+     }
+
+     //动画区
+     function bindFragmentPlugin(dir,val1,val2,val3,val4,val5,val6){
+         
+          console.log(dir,val1,val2,val3,val4,val5,val6);
+          $("#demoAnime_img").fragmentFly({
+               image_url:"./img/demoAnime.png",
+               cut_dir:"x",
+               ave_part:10,
+               rm_part:[4,7]
+          },{
+               
+               anime_dir:dir,
+               path:[val1,val2],
+               time:[val3,val4],
+               opacity:[val5,val6]
+
+          });
+     }
+    
 });
 
 
