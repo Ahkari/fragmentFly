@@ -34,16 +34,26 @@
 
 		<div class="wrap_middle">
 			<div class="wrap_middle_head">
-			<!-- 	<ul>
-					<li></li>
-					<li></li>
-					<li></li>
-				</ul> -->
+				<ul class="nav_ul">
+					<li>
+						<a href="#">使用说明</a>
+					</li>
+					<li>
+						<a href="#">配置说明</a>
+					</li>
+					<li>
+						<a href="#">动画模拟</a>
+					</li>
+					<li>
+						<a href="#">联系我</a>
+					</li>
+					<div class="clearFloat"></div>
+				</ul>
 			</div>
 			<div class="wrap_middle_body">
 				<div class="warp_middle_body_wrap">
 					<div class="parm_info">
-						<div class="parm_info_title">
+						<div class="parm_info_title" id="useInformation">
 							<p>使用说明</p>
 						</div>
 						<div class="infoArea">
@@ -84,7 +94,7 @@
 							<p>&nbsp;&nbsp;&nbsp;&nbsp;2.&nbsp;&nbsp;对元素运用插件，参数设置除了图片目录都有默认值。</p>
 							<div class="codeArea">
 								<pre class="brush: javascript;">
-								<!-- 对背景图元素运用fragmentFly插件 -->
+								/*对背景元素使用插件方法*/
 							    $("#fragment_title").fragmentFly({
 								    	image_url:"./img/title.png",	//背景图路径，当前目录为元素所在的html目录
 								    	cut_dir:"x",	//可选"x"或"y"，默认均分x方向
@@ -101,7 +111,7 @@
 							<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;快速配置如下。</p>
 							<div class="codeArea">
 								<pre class="brush: javascript;">
-								<!-- 快速配置 -->
+								/*快速配置*/
 							    $("#fragment_title").fragmentFly({image_url:"./img/title.png"},{});
 								</pre>
 							</div>
@@ -109,7 +119,7 @@
 						</div>
 						<br/>
 						<br/>
-						<div class="parm_info_title">
+						<div class="parm_info_title" id="quickSetting">
 							<p>配置说明</p>
 						</div>
 						<div class="Info_img_Wrap">
@@ -152,7 +162,7 @@
 						
 						<br/>
 						<br/>
-						<div class="parm_info_title">
+						<div class="parm_info_title" id="animeModifi">
 							<p>动画模拟</p>
 						</div>
 						<div class="infoArea">
@@ -361,7 +371,13 @@
 			</div>
 		</div>
 
-		<div class="wrap_bottom">
+		<div class="wrap_bottom" id="last_nav">
+			<div class="wrap_bottom_inside">
+				
+				<a><i class="iconfont">&#xf01c7;<span class="qqInfo">825584053</span></i></a>
+				<a href="http://weibo.com/ahkari/" target="_blank"><i class="iconfont">&#xf01af;</i></a>
+				<a href="https://github.com/Ahkari/fragmentFly" target="_blank"><i class="iconfont">&#xf01ca;</i></a>
+			</div>
 			<div class="wrap_bottom_fixed">
 			</div>
 		</div>

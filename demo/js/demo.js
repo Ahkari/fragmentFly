@@ -29,6 +29,22 @@ $(function(){
      	time:[600,1000],
      	opacity:[0,1]
      });
+
+
+     $(".nav_ul>li:first-child").on("click",function(){
+          $("html,body").animate({scrollTop:$("#useInformation").offset().top},300);
+     });
+     $(".nav_ul>li:nth-child(2)").on("click",function(){
+          $("html,body").animate({scrollTop:$("#quickSetting").offset().top},600);
+     });
+     $(".nav_ul>li:nth-child(3)").on("click",function(){
+          $("html,body").animate({scrollTop:$("#animeModifi").offset().top},800);
+     });
+     $(".nav_ul>li:nth-child(4)").on("click",function(){
+          $("html,body").animate({scrollTop:$(".wrap_bottom").offset().top},900);
+     });
+
+     
      //让动画模拟处的按钮初始化芹况满足预期，并绑定焦点切换事件。
      // for (var i=0;i<6;i++){
      //      var che=$("input[name=progress"+(i+1)+"]:checked");
