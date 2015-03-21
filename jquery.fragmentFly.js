@@ -2,21 +2,24 @@
  // 这里写代码了啦
 $.fn.extend({
     /**
-     * [fragment 碎片视差动画插件]
+     * [fragmentFly 碎片视差动画插件]
+     * @写于15/3/18
+     * @最后修改15/3/21
+     * @author：Ahkari
      *
      * @param {[divisionSetting]}
      *            分割设置，{
      *						 image_url:url,
      *                       cut_dir:"x","y",
-     *                       ave_part:ave_part,
-     *                       rm_part:rm_part
+     *                       ave_part:12,
+     *                       rm_part:[2,3]
      *                    }
      * @param {[animeSetting]}
      *            动画设置，{
      *                       anime_dir:"down","up","left","right"
-     *                       path:[100,200]
-     *                       time:[2000,3000]
-     *						 opacity:[0,1]
+     *                       path:[500,800]
+     *                       time:[1000,1300]
+     *						 opacity:[1,1]
      *                    }
      * @return null
      */
@@ -38,16 +41,16 @@ $.fn.extend({
         var cut_dir=divisionSetting.cut_dir?divisionSetting.cut_dir:"x";    //平均切割的方向
         var ave_part=divisionSetting.ave_part?divisionSetting.ave_part:12;  //平均切割份数
         var rm_part=divisionSetting.rm_part?divisionSetting.rm_part:[2,3];  //随机切割份数，最小份数与最大份数
-        var rm_part_min;
-        var rm_part_max;
+        var rm_part_min;    //随机方向上最小可能值
+        var rm_part_max;    //随机方向上最大可能值
+            ave_part=Number(ave_part);
         if (rm_part.length==1){
-            rm_part_min=rm_part[0];
-            rm_part_max=rm_part[0];
+            rm_part_min=Number(rm_part[0]);
+            rm_part_max=Number(rm_part[0]);
         }else{
-            rm_part_min=rm_part[0];
-            rm_part_max=rm_part[1];
+            rm_part_min=Number(rm_part[0]);
+            rm_part_max=Number(rm_part[1]);
         }
-
         var unitX;	//X方向上切割单位宽度
         var unitY;	//Y方向上切割单位宽度
         // var unitY1;
@@ -59,30 +62,31 @@ $.fn.extend({
         }
 
         if (cut_dir=="x"){
-            unitX=cardWidth/ave_part;
+            unitX=cardWidth/ave_part;   //X方向均分的单位长度
             // unitY1=cardHeight/2;
             // UnitY2=cardHeight/3;
         }else {
         	unitY=cardHeight/ave_part;
         }
 
-        var creatTitleCopy="";
-        var eachTitle;
+        var creatTitleCopy="";  //被html进去的全部元素字符串
+        var eachTitle;          //单个元素，一个个添加进creatTitleCopy中
 
-        var randomPart;
-        var randomArr=[];
+        var randomPart;         //随机方向上份数
+        var randomArr=[];       //记录每个随机数，便于之后动画绑定同样的份数
 
         var opacity=animeSetting.opacity?animeSetting.opacity:[1,1];
         var opacity_start;
         var opacity_end;
         if (opacity.length==1){
-            opacity_start=opacity[0];
-            opacity_end=opacity[0];
+            opacity_start=Number(opacity[0]);
+            opacity_end=Number(opacity[0]);
         }else{
-        	opacity_start=opacity[0];
-            opacity_end=opacity[1];
+           	opacity_start=Number(opacity[0]);
+            opacity_end=Number(opacity[1]);
+            
         }
-
+        //分割操作。外层是均等分割，内层是随机分割。
         for (var i=0;i<ave_part;i++){
             // var isRandom=(i%2==0)?2:3;
             randomPart=getRandom((rm_part_max-rm_part_min)+1)+rm_part_min-1;//此为满足[min,max]的随机值
@@ -120,7 +124,7 @@ $.fn.extend({
         } //for (var i=0;i<12;i++)
       
     
-    cardDom.html(creatTitleCopy);
+    cardDom.html(creatTitleCopy);   //元素添加进入cardDom
 
     //获取动画setting的值
  // @param {[animeSetting]}
@@ -165,23 +169,25 @@ $.fn.extend({
     var time_min;
     var time_max;
 
+    //路径参数
     if (path.length==1){
-        path_min=path[0];
-        path_max=path[0];
+        path_min=Number(path[0]);
+        path_max=Number(path[0]);
     }else{
-        path_min=path[0];
-        path_max=path[1];
+        path_min=Number(path[0]);
+        path_max=Number(path[1]);
     }
+    //时间参数
     if (time.length==1){
-        time_min=time[0];
-        time_max=time[0];
+        time_min=Number(time[0]);
+        time_max=Number(time[0]);
     }else{
-        time_min=time[0];
-        time_max=time[1];
+        time_min=Number(time[0]);
+        time_max=Number(time[1]);
     }
 
     
-
+    //动画绑定。外层是均分层，内层是随机方向。随机值取自之前分割时的随机值数组。
     for (var i=0;i<ave_part;i++){
         // var isRandom=(i%2==0)?2:3;
         var randomPartShift=randomArr.shift();
@@ -250,20 +256,6 @@ $.fn.extend({
 
         } // for (var j=0;j<isRandom;j++)
     } //for (var i=0;i<12;i++)
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
     }//"fragmentFly":function(objectArray,camera,callBack)
 
 });

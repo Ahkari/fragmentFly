@@ -89,7 +89,7 @@ $(function(){
           if($("#demoAnime_img>div").is(":animated")){
                return false;
           }else{
-               bindFragmentPlugin(dir,Number($(".input1").val()),Number($(".input2").val()),Number($(".input3").val()),Number($(".input4").val()),Number($(".input5").val()),Number($(".input6").val()));
+               bindFragmentPlugin(dir,$(".input1").val(),$(".input2").val(),$(".input3").val(),$(".input4").val(),$(".input5").val(),$(".input6").val());
           }
      }
 
