@@ -100,7 +100,7 @@ ul.nav_ul>li{
 	color:#ffffff;
 }
 ul.nav_ul>li:nth-child(4){
-	margin-left: 320px;
+	margin-left: 280px;
 	padding: 10px 30px 10px 30px;
 	float: left;
 	font-size: 17px;
@@ -110,6 +110,12 @@ ul.nav_ul>li:nth-child(4){
 	line-height: 150%;
 	/*color:#7acef4;*/
 	color:#111111;
+}
+.ahkari{
+	color: #E5777E;
+}
+.dot{
+	color: #ffffff;
 }
 ul.nav_ul>li:nth-child(4) a{
 	color: #7acef4;
