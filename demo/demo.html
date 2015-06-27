@@ -45,7 +45,7 @@
 						<a href="#">动画模拟</a>
 					</li>
 					<li>
-						<a href="#">author&nbsp;<span class="dot">:</span><span class="ahkari">&nbsp;Ahkari</span></a>
+						<a href="#">author&nbsp;<span class="dot">:</span><span class="ahkari">&nbsp;Ahkari</span><span class="version">&nbsp;&nbsp;&nbsp;&nbsp;v1.1 15/6/27</span></a>
 					</li>
 					<div class="clearFloat"></div>
 				</ul>
@@ -105,7 +105,9 @@
 								     	path:[500,800],		//切割子元素动画路长，默认路径最短500px，最长800px
 								     	time:[1000,1300],	//切割子元素动画时长，默认时长最短1000ms，最长1300ms
 								     	opacity:[1,1] 		//切割子元素透明度变化，默认初始为1，结束为1(即无渐变)
-								    });
+								    },
+								    	callback	//回调函数,在最后一个动画完成后立马触发,不一定是time的最大值
+								    );
 								</pre>
 							</div>
 							<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;快速配置如下。</p>

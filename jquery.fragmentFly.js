@@ -9,7 +9,7 @@ $.fn.extend({
      *
      * @param {[divisionSetting]}
      *            分割设置，{
-     *						 image_url:url,
+     *                       image_url:url,
      *                       cut_dir:"x","y",
      *                       ave_part:12,
      *                       rm_part:[2,3]
@@ -19,12 +19,12 @@ $.fn.extend({
      *                       anime_dir:"down","up","left","right"
      *                       path:[500,800]
      *                       time:[1000,1300]
-     *						 opacity:[1,1]
+     *                       opacity:[1,1]
      *                    }
      * @return null
      */
 
-    "fragmentFly":function(divisionSetting,animeSetting){
+    "fragmentFly":function(divisionSetting,animeSetting,callback){
         // jQuery对象的方法扩展，所以用jQuery.fn.extend()来编写
         cardDom=$(this);
         //绑定的图像的宽高，以此作为切割标准
@@ -51,8 +51,8 @@ $.fn.extend({
             rm_part_min=Number(rm_part[0]);
             rm_part_max=Number(rm_part[1]);
         }
-        var unitX;	//X方向上切割单位宽度
-        var unitY;	//Y方向上切割单位宽度
+        var unitX;  //X方向上切割单位宽度
+        var unitY;  //Y方向上切割单位宽度
         // var unitY1;
         // var unitY2;
 
@@ -66,7 +66,7 @@ $.fn.extend({
             // unitY1=cardHeight/2;
             // UnitY2=cardHeight/3;
         }else {
-        	unitY=cardHeight/ave_part;
+            unitY=cardHeight/ave_part;
         }
 
         var creatTitleCopy="";  //被html进去的全部元素字符串
@@ -82,7 +82,7 @@ $.fn.extend({
             opacity_start=Number(opacity[0]);
             opacity_end=Number(opacity[0]);
         }else{
-           	opacity_start=Number(opacity[0]);
+            opacity_start=Number(opacity[0]);
             opacity_end=Number(opacity[1]);
             
         }
@@ -92,27 +92,27 @@ $.fn.extend({
             randomPart=getRandom((rm_part_max-rm_part_min)+1)+rm_part_min-1;//此为满足[min,max]的随机值
             // unitY=(i%2==0)?unitY1:unitY2;
             if (cut_dir=="x"){
-	            unitY=cardHeight/randomPart;
-    		}else{
-    			unitX=cardWidth/randomPart;
-    		}
+                unitY=cardHeight/randomPart;
+            }else{
+                unitX=cardWidth/randomPart;
+            }
             randomArr.push(randomPart);
             for (var j=0;j<randomPart;j++){
-            	var left;
+                var left;
                 var top;
                 var width;
                 var height;
 
                 if (cut_dir=="x"){
-                	left=i*unitX;
+                    left=i*unitX;
                     top=j*unitY;
-                	width=unitX;
-                	height=unitY;
+                    width=unitX;
+                    height=unitY;
                 }else{
-                	left=j*unitX;
-                	top=i*unitY;
-                	width=unitX;
-                	height=unitY;
+                    left=j*unitX;
+                    top=i*unitY;
+                    width=unitX;
+                    height=unitY;
                 }
 
                 var styleStr="style=\"position:absolute;z-index:10;opacity:"+opacity_start+";left:"+left+"px;top:"+top+"px;width:"+width+"px;height:"+height+"px;background:url("+url+") no-repeat -"+left+"px -"+top+"px;\"";
@@ -186,7 +186,24 @@ $.fn.extend({
         time_max=Number(time[1]);
     }
 
-    
+    var timeRandomArr = []; 
+    var maxTimeMark ; //存储每次最大的时间的下标,遍历完最后此即为最大数字的下标
+    //制造随机时间参数,为了给之后用时最长的碎片增加回调函数
+    for(var i_time = 0;i_time < ave_part;i_time++){
+        var ranShift = randomArr[i_time];
+        for (var j_time = 0;j_time < ranShift;j_time++){
+            var time_store=getRandom(time_max-time_min+1)+time_min-1;
+            if (timeRandomArr.length === 0){
+                maxTimeMark = 0 ;
+            }else if (timeRandomArr[maxTimeMark]<= time_store){
+                maxTimeMark = timeRandomArr.length ;
+            }
+            timeRandomArr.push(time_store) ; 
+        }
+    }
+    var timeCount = 0; //碎片计数
+    var callbackMax = function(){}; //空函数callbackMax
+
     //动画绑定。外层是均分层，内层是随机方向。随机值取自之前分割时的随机值数组。
     for (var i=0;i<ave_part;i++){
         // var isRandom=(i%2==0)?2:3;
@@ -197,13 +214,20 @@ $.fn.extend({
             var title_y_path="+="+randomY.toString()+"px";
             var title_y_path_ready="-="+randomY.toString()+"px";
 
-            var time=getRandom(time_max-time_min+1)+time_min-1;
+            var time=timeRandomArr[timeCount];
+            if (timeCount !== maxTimeMark){
+                callbackMax = function(){} ;
+            }else if (timeCount === maxTimeMark){
+                callbackMax = callback ;
+            }
+            timeCount++;
+
 
             if (anime_dir_parm=="top"){
                 if (animeDirFlag==1){
-                	$("#"+cardDomName+"_cardCopy"+i+"_"+j)
-                		.css("opacity",opacity_end)
-                		.css("transition","opacity "+time/1000+"s");
+                    $("#"+cardDomName+"_cardCopy"+i+"_"+j)
+                        .css("opacity",opacity_end)
+                        .css("transition","opacity "+time/1000+"s");
 
                     $("#"+cardDomName+"_cardCopy"+i+"_"+j)
                         .animate({
@@ -211,11 +235,11 @@ $.fn.extend({
                     },0)
                         .animate({
                         top:title_y_path
-                    },time,"swing");
+                    },time,"swing",callbackMax);
                 }else if(animeDirFlag==0){
-                	$("#"+cardDomName+"_cardCopy"+i+"_"+j)
-                		.css("opacity",opacity_end)
-                		.css("transition","opacity "+time/1000+"s");
+                    $("#"+cardDomName+"_cardCopy"+i+"_"+j)
+                        .css("opacity",opacity_end)
+                        .css("transition","opacity "+time/1000+"s");
 
                     $("#"+cardDomName+"_cardCopy"+i+"_"+j)
                         .animate({
@@ -223,14 +247,14 @@ $.fn.extend({
                     },0)
                         .animate({
                         top:title_y_path_ready
-                    },time,"swing");
+                    },time,"swing",callbackMax);
                 }
             }   //if (anime_dir_parm=="top")
             else if(anime_dir_parm=="left"){
                 if (animeDirFlag==1){
-                	$("#"+cardDomName+"_cardCopy"+i+"_"+j)
-                		.css("opacity",opacity_end)
-                		.css("transition","opacity "+time/1000+"s");
+                    $("#"+cardDomName+"_cardCopy"+i+"_"+j)
+                        .css("opacity",opacity_end)
+                        .css("transition","opacity "+time/1000+"s");
 
                     $("#"+cardDomName+"_cardCopy"+i+"_"+j)
                         .animate({
@@ -238,11 +262,11 @@ $.fn.extend({
                     },0)
                         .animate({
                         left:title_y_path
-                    },time,"swing");
+                    },time,"swing",callbackMax);
                 }else if(animeDirFlag==0){
-                	$("#"+cardDomName+"_cardCopy"+i+"_"+j)
-                		.css("opacity",opacity_end)
-                		.css("transition","opacity "+time/1000+"s");
+                    $("#"+cardDomName+"_cardCopy"+i+"_"+j)
+                        .css("opacity",opacity_end)
+                        .css("transition","opacity "+time/1000+"s");
 
                     $("#"+cardDomName+"_cardCopy"+i+"_"+j)
                         .animate({
@@ -250,7 +274,7 @@ $.fn.extend({
                     },0)
                         .animate({
                         left:title_y_path_ready
-                    },time,"swing");
+                    },time,"swing",callbackMax);
                 }
             }   //else if(anime_dir_parm=="left")
 
