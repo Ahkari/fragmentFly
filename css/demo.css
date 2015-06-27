@@ -71,6 +71,48 @@ body{
 	/*宽高与被分割的背景图片一致*/
 	width: 424px;
 	height:150px;
+    display: inline-block;
+}
+.download-main{
+	display: inline-block;
+    height: 100%;
+    vertical-align: top;
+    margin-top: 20px;
+    margin-left: 272px;
+}
+.download-main .Viewbtn{
+	display: block;
+    background-color: #0769ad;
+    width: 170px;
+    color:#cbcbcb;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 30px;
+    font-family: 'Microsoft JhengHei','Microsoft YaHei';
+    border: 1px solid rgba(209, 143, 79, 0.8)
+}
+.download-main .Viewbtn:hover{
+	background-color: #d18f4f;
+	box-shadow: 0px 0px 20px rgba(209, 143, 79, 0.6);
+	color: #fff;
+}
+.download-main .btn{
+	display: block;
+    background-color: #0769ad;
+    width: 170px;
+    color:#cbcbcb;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-family: 'Microsoft JhengHei','Microsoft YaHei';
+    border: 1px solid rgba(209, 143, 79, 0.8)
+}
+.download-main .btn:hover{
+	background-color: #d18f4f;
+	box-shadow: 0px 0px 20px rgba(209, 143, 79, 0.6);
+	color:#fff;
 }
 .wrap_middle_head{
 	background-color: #06568e;	
