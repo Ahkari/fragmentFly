@@ -4,11 +4,11 @@ jquery动画插件,对指定元素进行图像分割碎片动画
 这里是主页 [fragmentFly](http://example.com/"碎片飞行动画").
 
 快速上手:
-  $("#fragment_title").fragmentFly({image_url:"./img/title.png"},{});
+  `$("#fragment_title").fragmentFly({image_url:"./img/title.png"},{});`
 参数说明:
-  $("#fragment_title").fragmentFly({
-    image_url:"./img/title.png",    //背景图路径，当前目录为元素所在的html目录
-    cut_dir:"x",    //可选"x"或"y"，默认均分x方向
+  `$("#fragment_title").fragmentFly({`
+    `image_url:"./img/title.png",    //背景图路径，当前目录为元素所在的html目录`
+    `cut_dir:"x",    //可选"x"或"y"，默认均分x方向`
     ave_part:12,    //均分cut_dir方向，默认切割成12份
     rm_part:[2,3]   //非cut_dir方向上随机切割，默认最小2份，最多3份 
   },{
