@@ -1,293 +1,331 @@
-;(function($){
- // 这里写代码了啦
+/*!
+ * fragmentFly 1.0.1 
+ * https://github.com/ahkari/fragmentFly
+ * @license MIT licensed
+ *
+ * Copyright (C) 2015 
+ */
+(function( global, factory){
+'use strict' ;
+if ( typeof define === 'function' && define.amd ){
+	define(['jquery'],function($){
+		return factory( $, global, global.document, global.Math) ;
+	}) ;
+}else if(typeof exports !== 'undefined'){
+	module.exports = factory(require('jquery'),global, global.document, global.Math) ;
+}else{
+	factory( jQuery, global, global.document, global.Math ) ;
+}
+})(typeof window !== 'undefined' ? window : this , function( $, window, document, Math, undefined){
+
+'use strict' ;
+
+//STATIC
+var CARD_NAME = 'fragmentCard' ;
+
+var AREA_WIDTH = 300 ;
+var AREA_HEIGHT = 150 ;
+
+var AREA_AVE_PART = 12 ;
+var AREA_CUT_DIR = 'x' ;
+var AREA_RM_PART = [ 2 , 3 ] ;
+
+var CARD_OPACITY = [ 1 , 1 ] ;
+
+var ANIME_DIR = 'down' ;
+var ANIME_PATH = [ 500 , 800 ] ;
+var ANIME_TIME = [ 1000 , 1300 ] ;
+
+var ANIME_MODE_MAP = {
+	'down' : {
+		anime_dir_parm : 'top' ,
+		animeDirFlag : 1 
+	},
+	'up' : {
+		anime_dir_parm : 'top' ,
+		animeDirFlag : 0 
+	},
+	'left' : {
+		anime_dir_parm : 'left' ,
+		animeDirFlag : 0 
+	},
+	'right' : {
+		anime_dir_parm : 'left' ,
+		animeDirFlag : 1
+	}
+} ;
+
+/**
+ * A jquery Card DOM Element.
+ * It is the small element which will apply animation.
+ * @class
+ * @param name {String} The id for this Card element
+ * @param texture {String} The texture for this Card element
+ * @param indexPosition {Array} The index for this Card in his Area
+ * @param styleOption {Object} The style for this Card
+ */
+function Card( name , texture , indexPosition , styleOption ){
+	var dom = document.createElement( 'div' ) ;
+	dom.style.position = 'absolute' ;
+	dom.style.zIndex = 10 ;
+	dom.style.opacity = styleOption.opacity_start ;
+	dom.style.left = styleOption.left + 'px' ;
+	dom.style.top = styleOption.top + 'px' ;
+	dom.style.width = styleOption.width + 'px' ;
+	dom.style.height = styleOption.height + 'px' ;
+
+	//dom.style.background = 'url("' + texture + '") no-repeat -'+ styleOption.left+'px -'+styleOption.top+'px;';
+
+	dom.style.backgroundImage = 'url(' + texture + ')' ;
+	dom.style.backgroundRepeat ='no-repeat' ;
+	dom.style.backgroundPositionX = '-' + styleOption.left + 'px' ;
+	dom.style.backgroundPositionY = '-' + styleOption.top + 'px' ;
+
+	dom.id = name + '_cardCopy_' + indexPosition[ 0 ] + '_' + indexPosition[ 1 ] ;
+
+	return $( dom ) ;
+}
+
+
+
+//utils
+var utils = {
+	getRandom : function( n ){
+		return Math.floor( Math.random() * n + 1 ) ;
+	},
+	getCurElement : function( dom , curName , positionIndex ){
+		return dom.find( '#' + curName + '_cardCopy_' + positionIndex[ 0 ] + '_' + positionIndex[ 1 ] ) ;
+	},
+	imageLoad : function( imgUrl , callback , context ){
+		var imgTmp = new Image() ;
+		imgTmp.onload = function(){
+			callback && callback.call( context ) ;
+		} ;
+		imgTmp.src = imgUrl ;
+	},
+} ;
+
 $.fn.extend({
-    /**
-     * [fragmentFly 碎片视差动画插件]
-     * @写于15/3/18
-     * @最后修改15/3/21
-     * @author：Ahkari
-     *
-     * @param {[divisionSetting]}
-     *            分割设置，{
-     *                       image_url:url,
-     *                       cut_dir:"x","y",
-     *                       ave_part:12,
-     *                       rm_part:[2,3]
-     *                    }
-     * @param {[animeSetting]}
-     *            动画设置，{
-     *                       anime_dir:"down","up","left","right"
-     *                       path:[500,800]
-     *                       time:[1000,1300]
-     *                       opacity:[1,1]
-     *                    }
-     * @return null
-     */
+	"fragmentFly" : function( divisionSetting , animeSetting, callback ){
+		//exist value
+		if ( !divisionSetting ) {
+			console.warn('Please confirm you have more than one valid arguments~' ) ;
+			return ;
+		}
 
-    "fragmentFly":function(divisionSetting,animeSetting,callback){
-        // jQuery对象的方法扩展，所以用jQuery.fn.extend()来编写
-        cardDom=$(this);
-        //绑定的图像的宽高，以此作为切割标准
-        var cardHeight=cardDom.height();
-        var cardWidth=cardDom.width();
-        //获取ID，作为生成元素的主标识
-        var cardDomName=cardDom.attr("id");
-        var url=divisionSetting.image_url;
+		var url = divisionSetting.image_url ;
+		if (  !(typeof url === 'string' && url.length !== 0 ) ){
+			console.warn('You should have a valid image url address~');
+            return ;
+		}
 
-        var cardCopyObjects;
+		var cardDom = $( this ) ;
 
-        // 获取divisionSetting内的数值。完成分割。
-        //指定参数为空时自动使用默认值。横向均分为12份，纵向随机分成2,3份。
-        var cut_dir=divisionSetting.cut_dir?divisionSetting.cut_dir:"x";    //平均切割的方向
-        var ave_part=divisionSetting.ave_part?divisionSetting.ave_part:12;  //平均切割份数
-        var rm_part=divisionSetting.rm_part?divisionSetting.rm_part:[2,3];  //随机切割份数，最小份数与最大份数
-        var rm_part_min;    //随机方向上最小可能值
-        var rm_part_max;    //随机方向上最大可能值
-            ave_part=Number(ave_part);
-        if (rm_part.length==1){
-            rm_part_min=Number(rm_part[0]);
-            rm_part_max=Number(rm_part[0]);
-        }else{
-            rm_part_min=Number(rm_part[0]);
-            rm_part_max=Number(rm_part[1]);
+		var cardHeight = cardDom.length > 0 ? cardDom.height() : AREA_HEIGHT ;
+		
+		var cardWidth = cardDom.length >0 ? cardDom.width() : AREA_WIDTH ;
+		
+		var cardName = cardDom.attr('id') ? cardDom.attr('id') : CARD_NAME ;
+
+		var cut_dir = divisionSetting.cut_dir ? divisionSetting.cut_dir : AREA_CUT_DIR ;
+
+		var ave_part = divisionSetting.ave_part ? (divisionSetting.ave_part-0) : AREA_AVE_PART ;
+
+		var rm_part = divisionSetting.rm_part ? divisionSetting.rm_part : AREA_RM_PART ;
+
+		var opacity = (animeSetting && animeSetting.opacity ) ? animeSetting.opacity : CARD_OPACITY ;
+
+		//undefined value
+		var cardCopyObjects ,
+			rm_part_min ,
+			rm_part_max ,
+			unitX ,
+			unitY ,
+			eachTitle ,
+			randomPart ,
+			opacity_start ,
+			opacity_end ;
+
+		rm_part_min = Number( rm_part[ 0 ] ) ;
+		rm_part_max = rm_part.length === 1 ? Number( rm_part[ 0 ] ) : Number( rm_part[ 1 ] ) ;
+
+        if ( cut_dir === 'x' ) {
+        	unitX = cardWidth / ave_part ;
+        } else {
+        	unitY = cardHeight / ave_part ;
         }
-        var unitX;  //X方向上切割单位宽度
-        var unitY;  //Y方向上切割单位宽度
-        // var unitY1;
-        // var unitY2;
+        
+        opacity_start = Number( opacity[ 0 ] ) ;
+        opacity_end = opacity.length === 1 ? Number( opacity[ 0 ] ) : Number( opacity[ 1 ] ) ;
 
-        // 随机数生成函数，n为生成1-n的数
-        var getRandom=function(n){  
-            return Math.floor(Math.random()*n+1)
-        }
+        //cache Value
+        var randomArr = [] ;
+        var creatTitleCopy = '' ;
 
-        if (cut_dir=="x"){
-            unitX=cardWidth/ave_part;   //X方向均分的单位长度
-            // unitY1=cardHeight/2;
-            // UnitY2=cardHeight/3;
-        }else {
-            unitY=cardHeight/ave_part;
-        }
+        //cut operation
+        // var $fragment = $( document.createDocumentFragment() ) ;
+        for( var i = 0 ; i < ave_part ; i++ ){
+        	randomPart = utils.getRandom( ( rm_part_max - rm_part_min ) + 1 ) + rm_part_min - 1 ;
+        	if ( cut_dir === 'x' ){
+        		unitY = cardHeight / randomPart ;
+        	}else{
+        		unitX = cardWidth / randomPart ;
+        	}
+        	randomArr.push( randomPart ) ;
+        	
+        	for ( var j = 0 ; j < randomPart ; j++ ){
+        		var left ,
+        			top ,
+        			width ,
+        			height ;
 
-        var creatTitleCopy="";  //被html进去的全部元素字符串
-        var eachTitle;          //单个元素，一个个添加进creatTitleCopy中
+        		if ( cut_dir === 'x' ){
+        			left = i * unitX ;
+        			top = j * unitY ;
+        			width = unitX ;
+        			height = unitY ;
+        		} else {
+        			left = j * unitX ;
+        			top = i * unitY ;
+        			width = unitX ;
+        			height = unitY ;
+        		}
 
-        var randomPart;         //随机方向上份数
-        var randomArr=[];       //记录每个随机数，便于之后动画绑定同样的份数
-
-        var opacity=animeSetting.opacity?animeSetting.opacity:[1,1];
-        var opacity_start;
-        var opacity_end;
-        if (opacity.length==1){
-            opacity_start=Number(opacity[0]);
-            opacity_end=Number(opacity[0]);
-        }else{
-            opacity_start=Number(opacity[0]);
-            opacity_end=Number(opacity[1]);
-            
-        }
-        //分割操作。外层是均等分割，内层是随机分割。
-        for (var i=0;i<ave_part;i++){
-            // var isRandom=(i%2==0)?2:3;
-            randomPart=getRandom((rm_part_max-rm_part_min)+1)+rm_part_min-1;//此为满足[min,max]的随机值
-            // unitY=(i%2==0)?unitY1:unitY2;
-            if (cut_dir=="x"){
-                unitY=cardHeight/randomPart;
-            }else{
-                unitX=cardWidth/randomPart;
-            }
-            randomArr.push(randomPart);
-            for (var j=0;j<randomPart;j++){
-                var left;
-                var top;
-                var width;
-                var height;
-
-                if (cut_dir=="x"){
-                    left=i*unitX;
-                    top=j*unitY;
-                    width=unitX;
-                    height=unitY;
-                }else{
-                    left=j*unitX;
-                    top=i*unitY;
-                    width=unitX;
-                    height=unitY;
-                }
-
-                var styleStr="style=\"position:absolute;z-index:10;opacity:"+opacity_start+";left:"+left+"px;top:"+top+"px;width:"+width+"px;height:"+height+"px;background:url("+url+") no-repeat -"+left+"px -"+top+"px;\"";
+        		var styleStr = "style=\"position:absolute;z-index:10;opacity:"+opacity_start+";left:"+left+"px;top:"+top+"px;width:"+width+"px;height:"+height+"px;background:url("+url+") no-repeat -"+left+"px -"+top+"px;\"";
           
-                eachTitle="<div id=\""+cardDomName+"_cardCopy"+i+"_"+j+"\" "+styleStr+"></div>";
-                creatTitleCopy+=eachTitle;
-    
-            } //for (var j=0;j<isRandom;j++)
-        } //for (var i=0;i<12;i++)
-      
-    
-    cardDom.html(creatTitleCopy);   //元素添加进入cardDom
+                eachTitle = "<div id=\""+cardName+"_cardCopy_"+i+"_"+j+"\" "+styleStr+"></div>";
+                creatTitleCopy += eachTitle;
 
-    //获取动画setting的值
- // @param {[animeSetting]}
- //     *            动画设置，{
- //     *                       anime_dir,
- //     *                       path:[100 50],
- //     *                       time:[2000 500]
- //     *                    }
- //     * @return null
- //     */
-    //有默认动画设置，默认是向下，最短路长500，最长路长800，最短时间1000ms，最长时间1300ms.
-    var anime_dir=animeSetting.anime_dir?animeSetting.anime_dir:"down";    //动画的方向
-    var path=animeSetting.path?animeSetting.path:[500,800];
-    var time=animeSetting.path?animeSetting.time:[1000,1300];
-    // 绑动画
-
-    var anime_dir_parm;
-    var animeDirFlag;   //动画方向标识
-    //模式选择
-    switch(anime_dir){
-        case "down":
-            anime_dir_parm="top";        
-            animeDirFlag=1;
-           break;
-        case "up":
-            anime_dir_parm="top";
-            animeDirFlag=0;
-            break;
-        case "left":
-            anime_dir_parm="left";
-            animeDirFlag=0;
-            break;
-        case "right":
-            anime_dir_parm="left";
-            animeDirFlag=1;
-            break;
-    }  
-
-    var path_min;
-    var path_max;
-
-    var time_min;
-    var time_max;
-
-    //路径参数
-    if (path.length==1){
-        path_min=Number(path[0]);
-        path_max=Number(path[0]);
-    }else{
-        path_min=Number(path[0]);
-        path_max=Number(path[1]);
-    }
-    //时间参数
-    if (time.length==1){
-        time_min=Number(time[0]);
-        time_max=Number(time[0]);
-    }else{
-        time_min=Number(time[0]);
-        time_max=Number(time[1]);
-    }
-
-    var timeRandomArr = []; 
-    var maxTimeMark ; //存储每次最大的时间的下标,遍历完最后此即为最大数字的下标
-    //制造随机时间参数,为了给之后用时最长的碎片增加回调函数
-    for(var i_time = 0;i_time < ave_part;i_time++){
-        var ranShift = randomArr[i_time];
-        for (var j_time = 0;j_time < ranShift;j_time++){
-            var time_store=getRandom(time_max-time_min+1)+time_min-1;
-            if (timeRandomArr.length === 0){
-                maxTimeMark = 0 ;
-            }else if (timeRandomArr[maxTimeMark]<= time_store){
-                maxTimeMark = timeRandomArr.length ;
-            }
-            timeRandomArr.push(time_store) ; 
+        		// $fragment.append( new Card(  CARD_NAME , url , [ i , j ] , {
+        		// 	opacity_start : opacity_start ,
+        		// 	left : left ,
+        		// 	top : top ,
+        		// 	width : width ,
+        		// 	height : height ,
+        		// } ) )  ;
+        	}
         }
-    }
-    var timeCount = 0; //碎片计数
-    var callbackMax = function(){}; //空函数callbackMax
+        // cardDom.html( $fragment ) ;
 
-    //动画绑定。外层是均分层，内层是随机方向。随机值取自之前分割时的随机值数组。
-    for (var i=0;i<ave_part;i++){
-        // var isRandom=(i%2==0)?2:3;
-        var randomPartShift=randomArr.shift();
-        for (var j=0;j<randomPartShift;j++){
-            var randomY=getRandom(path_max-path_min+1)+path_min-1;
+        cardDom.html(creatTitleCopy);
 
-            var title_y_path="+="+randomY.toString()+"px";
-            var title_y_path_ready="-="+randomY.toString()+"px";
+        //value
+        var anime_dir = animeSetting.anime_dir ? animeSetting.anime_dir : ANIME_DIR ;
+        
+        var path = animeSetting.path ? animeSetting.path : ANIME_PATH ;
+        
+        var time = animeSetting.time ? animeSetting.time : ANIME_TIME ;
 
-            var time=timeRandomArr[timeCount];
-            if (timeCount !== maxTimeMark){
-                callbackMax = function(){} ;
-            }else if (timeCount === maxTimeMark){
-                callbackMax = callback ;
-            }
-            timeCount++;
+        var anime_dir_parm = ANIME_MODE_MAP[ anime_dir ].anime_dir_parm ;
+        
+        var	animeDirFlag = ANIME_MODE_MAP[ anime_dir ].animeDirFlag ;
+
+        var path_min ,
+			path_max ,
+			time_min , 
+			time_max ;
+
+		path_min = Number( path[ 0 ] ) ;
+		path_max = path.length === 1 ? Number( path[ 0 ] ) : Number( path[ 1 ] ) ;
+
+	    time_min = Number( time[ 0 ] ) ;
+	    time_max = path.length === 1 ? Number( time[ 0 ] ) : Number( time[ 1 ] ) ;
+
+	    //cache value
+	    var timeRandomArr = [] ;
+	    var maxTimeMark ; //Max Time Element Index
+
+	    for ( var i_time = 0 ; i_time < ave_part ; i_time++ ){
+	    	var ranShift = randomArr[ i_time ] ;
+	    	for ( var j_time = 0 ; j_time < ranShift ; j_time++ ){
+	    		var time_store = utils.getRandom( time_max - time_min + 1 ) + time_min - 1 ;
+	    		if ( timeRandomArr.length === 0 ){
+	    			maxTimeMark = 0 ;
+	    		} else if ( timeRandomArr[ maxTimeMark ] <= time_store ){
+	    			maxTimeMark = timeRandomArr.length ;
+	    		}
+	    		timeRandomArr.push( time_store ) ;
+	    	}
+	    }
+
+	    //countValue
+	    var timeCount = 0 ;
+	    var callbackMax = $.noop ;
+
+	    utils.imageLoad( url , function(){
+
+		    for ( var i = 0 ; i < ave_part ; i++ ){
+		    	var randomPartShift = randomArr.shift() ;
+		    	for ( var j =0 ; j < randomPartShift ; j++ ){
+		    		var randomY = utils.getRandom( path_max - path_min + 1 ) + path_min - 1 ;
+
+		    		var title_y_path = '+=' + randomY.toString() + 'px' ;
+		    		var title_y_path_ready = "-=" + randomY.toString() + "px" ;
+
+		    		var time = timeRandomArr[ timeCount ] ;
+		            if ( timeCount === maxTimeMark ){
+		                callbackMax = callback ;
+		            } else {
+		            	callbackMax = $.noop ;
+		            }
+		            timeCount++;
+
+		            var $curEle = utils.getCurElement( cardDom , cardName , [ i, j ] ) ;
+		            if ( anime_dir_parm === "top" ){
+		                if ( animeDirFlag ===  1 ){
+		                    $curEle
+		                        .animate({
+		                        top : title_y_path_ready ,
+		                        opacity : opacity_start
+		                    },0)
+		                        .animate({
+		                        top : title_y_path ,
+		                        opacity : opacity_end  
+		                    }, time , "swing" , callbackMax ) ;
+		                }else if( animeDirFlag === 0 ){
+		                    $curEle
+		                        .animate({
+		                        top : title_y_path ,
+		                        opacity : opacity_start
+		                    },0)
+		                        .animate({
+		                        top : title_y_path_ready ,
+		                        opacity : opacity_end
+		                    }, time , "swing" , callbackMax ) ;
+		                }
+		            }   //if (anime_dir_parm=="top")
+		            else if( anime_dir_parm === "left" ){
+		                if ( animeDirFlag === 1 ){
+		                    $curEle
+		                        .animate({
+		                        left : title_y_path_ready ,
+		                        opacity : opacity_start
+		                    },0)
+		                        .animate({
+		                        left : title_y_path ,
+		                        opacity : opacity_end
+		                    }, time , "swing" , callbackMax ) ;
+		                }else if( animeDirFlag === 0 ){
+		                    $curEle
+		                        .animate({
+		                        left : title_y_path ,
+		                        opacity : opacity_start
+		                    },0)
+		                        .animate({
+		                        left : title_y_path_ready ,
+		                        opacity : opacity_end
+		                    }, time , "swing" , callbackMax ) ;
+		                }
+		            } 
+		    	}
+		    }
+		} , this ) ; //fix bind not support in IE8
+	    // }.bind( this ) ) ; 
+	}
+})
 
 
-            if (anime_dir_parm=="top"){
-                if (animeDirFlag==1){
-                    $("#"+cardDomName+"_cardCopy"+i+"_"+j)
-                        .css("opacity",opacity_end)
-                        .css("transition","opacity "+time/1000+"s");
-
-                    $("#"+cardDomName+"_cardCopy"+i+"_"+j)
-                        .animate({
-                        top:(title_y_path_ready)
-                    },0)
-                        .animate({
-                        top:title_y_path
-                    },time,"swing",callbackMax);
-                }else if(animeDirFlag==0){
-                    $("#"+cardDomName+"_cardCopy"+i+"_"+j)
-                        .css("opacity",opacity_end)
-                        .css("transition","opacity "+time/1000+"s");
-
-                    $("#"+cardDomName+"_cardCopy"+i+"_"+j)
-                        .animate({
-                        top:title_y_path
-                    },0)
-                        .animate({
-                        top:title_y_path_ready
-                    },time,"swing",callbackMax);
-                }
-            }   //if (anime_dir_parm=="top")
-            else if(anime_dir_parm=="left"){
-                if (animeDirFlag==1){
-                    $("#"+cardDomName+"_cardCopy"+i+"_"+j)
-                        .css("opacity",opacity_end)
-                        .css("transition","opacity "+time/1000+"s");
-
-                    $("#"+cardDomName+"_cardCopy"+i+"_"+j)
-                        .animate({
-                        left:(title_y_path_ready)
-                    },0)
-                        .animate({
-                        left:title_y_path
-                    },time,"swing",callbackMax);
-                }else if(animeDirFlag==0){
-                    $("#"+cardDomName+"_cardCopy"+i+"_"+j)
-                        .css("opacity",opacity_end)
-                        .css("transition","opacity "+time/1000+"s");
-
-                    $("#"+cardDomName+"_cardCopy"+i+"_"+j)
-                        .animate({
-                        left:title_y_path
-                    },0)
-                        .animate({
-                        left:title_y_path_ready
-                    },time,"swing",callbackMax);
-                }
-            }   //else if(anime_dir_parm=="left")
-
-        } // for (var j=0;j<isRandom;j++)
-    } //for (var i=0;i<12;i++)
-    }//"fragmentFly":function(objectArray,camera,callBack)
-
-});
-})(jQuery);
 
 
 
-
-
-
-
+})
