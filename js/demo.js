@@ -93,10 +93,15 @@ $(function(){
           }
      }
 
+     //性能检测
+     var timeCount = 0 ;
+     var allTime = 0 ;
+
      //动画区
      function bindFragmentPlugin(dir,val1,val2,val3,val4,val5,val6){
          
-          console.log(dir,val1,val2,val3,val4,val5,val6);
+          var before = new Date().getTime() ;
+
           $("#demoAnime_img").fragmentFly({
                image_url:"./img/demoAnime.png",
                cut_dir:"x",
@@ -108,6 +113,17 @@ $(function(){
                path:[val1,val2],
                time:[val3,val4],
                opacity:[val5,val6]
+
+          },function(){
+               var now = new Date().getTime() ;
+
+               timeCount++ ;
+
+               var costTime = now - before ;
+               allTime += costTime ;
+
+               console.info( 'animte:' + dir,val1,val2,val3,val4,val5,val6 );
+               console.info( 'totalCount:' + timeCount , 'aveTime:' +  allTime / timeCount ) ;
 
           });
      }
